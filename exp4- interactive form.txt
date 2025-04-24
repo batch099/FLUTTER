@@ -1,80 +1,107 @@
 exp4-
 main.dart-
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: StudentForm(),
+      title: 'Student Form',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.teal),
+      home: const StudentFormPage(),
     );
   }
 }
 
-class StudentForm extends StatefulWidget {
+class StudentFormPage extends StatefulWidget {
+  const StudentFormPage({super.key});
+
   @override
-  _StudentFormState createState() => _StudentFormState();
+  State<StudentFormPage> createState() => _StudentFormPageState();
 }
 
-class _StudentFormState extends State<StudentForm> {
+class _StudentFormPageState extends State<StudentFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  String _selectedCourse = 'Flutter';
+
+  final _nameController = TextEditingController();
+  final _moodleIdController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _emailController = TextEditingController();
+
   String _gender = 'Male';
+  String _selectedCourse = 'Flutter';
   bool _isTermsAccepted = false;
 
   void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Form Submitted!')));
+    if (_formKey.currentState!.validate() && _isTermsAccepted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Form Submitted Successfully!')),
+      );
+    } else if (!_isTermsAccepted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please accept the terms and conditions!')),
+      );
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Please fill in all fields!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please complete the form!')),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Student Form'),
-        backgroundColor: Colors.teal,
-      ),
-      body: Padding(
+      appBar: AppBar(title: const Text('Student Registration Form')),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: ListView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Name input
+              const Text("Personal Information",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 15),
+
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(
-                    labelText: 'Name', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Full Name', border: OutlineInputBorder()),
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your name' : null,
               ),
-              SizedBox(height: 10),
-              // Age input
+              const SizedBox(height: 10),
+
+              TextFormField(
+                controller: _moodleIdController,
+                decoration: const InputDecoration(
+                    labelText: 'Moodle ID', border: OutlineInputBorder()),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your Moodle ID' : null,
+              ),
+              const SizedBox(height: 10),
+
               TextFormField(
                 controller: _ageController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Age', border: OutlineInputBorder()),
                 keyboardType: TextInputType.number,
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your age' : null,
               ),
-              SizedBox(height: 10),
-              // Email input
+              const SizedBox(height: 10),
+
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Email', border: OutlineInputBorder()),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -86,11 +113,12 @@ class _StudentFormState extends State<StudentForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
-              // Gender radio buttons
+              const SizedBox(height: 20),
+
+              const Text("Gender",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Row(
                 children: [
-                  Text('Gender:'),
                   Radio<String>(
                     value: 'Male',
                     groupValue: _gender,
@@ -100,7 +128,7 @@ class _StudentFormState extends State<StudentForm> {
                       });
                     },
                   ),
-                  Text('Male'),
+                  const Text('Male'),
                   Radio<String>(
                     value: 'Female',
                     groupValue: _gender,
@@ -110,47 +138,53 @@ class _StudentFormState extends State<StudentForm> {
                       });
                     },
                   ),
-                  Text('Female'),
+                  const Text('Female'),
                 ],
               ),
-              SizedBox(height: 10),
-              // Course dropdown
+              const SizedBox(height: 20),
+
+              const Text("Course",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 value: _selectedCourse,
-                items:
-                    ['Flutter', 'Dart', 'React', 'Python'].map((String course) {
-                  return DropdownMenuItem<String>(
-                    value: course,
-                    child: Text(course),
-                  );
-                }).toList(),
+                items: ['Flutter', 'Dart', 'React', 'Python']
+                    .map((course) => DropdownMenuItem(
+                          value: course,
+                          child: Text(course),
+                        ))
+                    .toList(),
                 onChanged: (value) {
                   setState(() {
                     _selectedCourse = value!;
                   });
                 },
-                decoration: InputDecoration(
-                    labelText: 'Course', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Select Course', border: OutlineInputBorder()),
               ),
-              SizedBox(height: 10),
-              // Terms checkbox
+              const SizedBox(height: 20),
+
               CheckboxListTile(
-                title: Text("Accept Terms"),
+                title: const Text("I accept the terms and conditions."),
                 value: _isTermsAccepted,
-                onChanged: (bool? value) {
+                onChanged: (value) {
                   setState(() {
                     _isTermsAccepted = value!;
                   });
                 },
               ),
-              SizedBox(height: 20),
-              // Submit button
-              ElevatedButton(
-                onPressed: _submitForm,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal, // Corrected to backgroundColor
+              const SizedBox(height: 20),
+
+              Center(
+                child: ElevatedButton(
+                  onPressed: _submitForm,
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 15)),
+                  child: const Text('Submit',
+                      style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
-                child: Text('Submit'),
               ),
             ],
           ),
@@ -159,6 +193,3 @@ class _StudentFormState extends State<StudentForm> {
     );
   }
 }
-
-
-pubspec.yaml kuch update mat karo

@@ -3,55 +3,57 @@ MAIN.DART
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: IDCard(),
     );
   }
 }
 
 class IDCard extends StatelessWidget {
+  const IDCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ID Card"),
+        title: const Text("ID Card"),
       ),
       body: Center(
-        child: Container(
-          width: 500, // Set the width to make the card a square
-          height: 300, // Set the height to make the card a square
+        child: SizedBox(
+          width: 500,
+          height: 330,
           child: Card(
             elevation: 10,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
-            color: Colors.grey[200], // Set background color to light grey
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
+            color: Colors.grey[200],
+            child: const Padding(
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('assets/download.jpeg'),
+                    backgroundImage: AssetImage('assets/download.jpg'),
                   ),
                   SizedBox(height: 20),
-                  // Name
                   Text(
-                    'Michael Scott',
+                    'Shreyash Narvekar',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10),
-                  // Date of Birth with Calendar Icon
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -60,9 +62,9 @@ class IDCard extends StatelessWidget {
                         color: Colors.blue,
                         size: 20,
                       ),
-                      SizedBox(width: 8), // Spacer between icon and text
+                      SizedBox(width: 8),
                       Text(
-                        'Date of Birth: March 15, 1965',
+                        'Date of Birth: August 31 , 2004',
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
@@ -76,11 +78,27 @@ class IDCard extends StatelessWidget {
                         color: Colors.red,
                         size: 20,
                       ),
-                      SizedBox(width: 8), // Spacer between icon and text
+                      SizedBox(width: 8),
                       Text(
-                        'Address: 1725 Slough Avenue, Scranton, PA 18505',
+                        'Krishna Greeenland Park Kasarvadavli Thane',
                         style: TextStyle(fontSize: 16),
                         textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.school,
+                        color: Colors.green,
+                        size: 20,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        'Academic Year: 2024–2025',
+                        style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
@@ -93,7 +111,6 @@ class IDCard extends StatelessWidget {
     );
   }
 }
-
 
 
 pubspec.yaml-

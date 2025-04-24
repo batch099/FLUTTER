@@ -1,129 +1,154 @@
 exp5- app routing
 main.dart-
+
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
+// Entry widget
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeRoute(),
-      debugShowCheckedModeBanner: false, // Remove the debug banner
+    return MaterialApp(
+      title: "HOTEL OM SAI",
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.deepOrange,
+        scaffoldBackgroundColor: Colors.orange[50],
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/menu': (context) => const MenuPage(),
+      },
     );
   }
 }
 
-class HomeRoute extends StatelessWidget {
-  const HomeRoute({Key? key}) : super(key: key);
+// Home Page
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Click please!'),
-        backgroundColor: Colors.orange.shade600, // Summer orange color
+        title: const Text("Welcome to HOTEL OM-SAI"),
         centerTitle: true,
-        elevation: 0,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.orange.shade400,
-              Colors.yellow.shade200
-            ], // Warm sunset colors
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      body: Center(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepOrange,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange.shade700, // Bright orange color
-                foregroundColor: Colors.white, // Text color on button
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 8,
-              ),
-              child: const Text(
-                'Go to Second Screen!',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SecondRoute()),
-                );
-              },
-            ),
-          ),
+          onPressed: () {
+            Navigator.pushNamed(context, '/menu');
+          },
+          child: const Text("View Menu", style: TextStyle(fontSize: 18)),
         ),
       ),
     );
   }
 }
 
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({Key? key}) : super(key: key);
+// Menu Page
+class MenuPage extends StatelessWidget {
+  const MenuPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Summer Vibes"),
-        backgroundColor: Colors.teal.shade600, // Refreshing teal color
+        title: const Text("HOTEL OM-SAI MENU"),
         centerTitle: true,
-        elevation: 0,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.blue.shade400,
-              Colors.green.shade300
-            ], // Cool oceanic vibes
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      body: ListView(
+        padding: const EdgeInsets.all(10),
+        children: const [
+          ProductBox(
+            name: "Vadapav",
+            description: "A piping hot fried batata vada wrapped in a fresh and soft pav.",
+            price: 15,
+            image: "assets/vadapav.jpg",
           ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.shade600, // Bright blue color
-                foregroundColor: Colors.white, // Text color on button
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 8,
-              ),
-              child: const Text(
-                'Back to Home!',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+          ProductBox(
+            name: "Misal Pav",
+            description: "A fiery spicy lentil gravy with pav smothered in butter, topped with coriander and onion.",
+            price: 55,
+            image: "assets/misalpav.jpeg",
+          ),
+          ProductBox(
+            name: "Pav Bhaji",
+            description: "A healthy mashed vegetable butter gravy accompanied by buttery pav and spices.",
+            price: 90,
+            image: "assets/Pavbhaji.jpg",
+          ),
+          ProductBox(
+            name: "Waffle",
+            description: "A decadent freshly baked waffle dipped in rich Belgian chocolate.",
+            price: 30,
+            image: "assets/waffle.jpg",
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Product Widget
+class ProductBox extends StatelessWidget {
+  final String name;
+  final String description;
+  final int price;
+  final String image;
+
+  const ProductBox({
+    super.key,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.image,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(image, width: 100, height: 100, fit: BoxFit.cover),
             ),
-          ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 6),
+                  Text(description, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+                  const SizedBox(height: 6),
+                  Text(
+                    "₹ $price",
+                    style: const TextStyle(fontSize: 16, color: Colors.green, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+

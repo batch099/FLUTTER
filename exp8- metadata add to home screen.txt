@@ -1,26 +1,91 @@
 exp8- metadata add to home screen
-manifest.json-
 
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Responsive -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!-- Title -->
+<title>PWA Tutorial</title>
+<!-- Meta Tags required for Progressive Web App -->
+<meta name= "apple-mobile-web-app-status-bar" content="#aa7700">
+<meta name="theme-color" content="black">
+
+<!-- Manifest File link -->
+<link rel="manifest" href="manifest.json">
+
+<script>
+			window.addEventListener('load', () => {
+			  registerSW();
+			});
+		 
+			// Register the Service Worker
+			async function registerSW() {
+			  if ('serviceWorker' in navigator) {
+				try {
+				  await navigator
+						.serviceWorker
+						.register('serviceworker.js');
+				}
+				catch (e) {
+				  console.log('SW registration failed');
+				}
+			  }
+			}
+</script>
+</head>
+<body>
+<h1 style="color: green;"> TE-IT  Name: Yaminee Patil Moodle no: </h1>
+<p>
+	This is a simple tutorial for creating a PWA application.
+</p>
+</body>
+</html>
+
+
+serviceworker.js
+var staticCacheName = "pwa";
+self.addEventListener("install", function (e) {
+    e.waitUntil(
+      caches.open(staticCacheName).then(function (cache) {
+        return cache.addAll(["/"]);
+      })
+    );
+  });
+   
+  self.addEventListener("fetch", function (event) {
+    console.log(event.request.url);
+       event.respondWith(
+      caches.match(event.request).then(function (response) {
+        return response || fetch(event.request);
+      })
+    );
+  });
+
+Manifest.json
 {
-  "name": "Flutter eCommerce PWA",
-  "short_name": "FlutterPWA",
-  "description": "A powerful eCommerce PWA built with Flutter.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ff6600",
-  "icons": [
-    {
-      "src": "icons/Icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/Icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+	"name":"PWA Tutorial",
+	"short_name":"PWA",
+	"start_url":"index.html",
+	"display":"standalone",
+	"background_color":"#5900b3",
+	"theme_color":"black",
+	"scope": ".",
+	"description":"This is a PWA tutorial.",
+	"icons":[
+	{
+	"src":"images/icon-192x192.png",					
+	"sizes":"192x192",
+	"type":"image/png"
+	},
+	{
+	"src":"images/icon-512x512.png",
+	"sizes":"512x512",
+	"type":"image/png"
+	}
+]
 }
 
 
